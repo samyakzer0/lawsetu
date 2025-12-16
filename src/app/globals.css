@@ -104,7 +104,17 @@
       }
     }
 
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
     --animate-fade-in-up: fadeInUp 0.5s ease-out forwards;
+    --animate-fade-in: fadeIn 0.5s ease-out forwards;
 }
 
 @layer base {

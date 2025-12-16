@@ -366,44 +366,7 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Gavel Block (Wooden Base - Stacked Cylinder Effect) */}
-            <div className="absolute top-[440px] left-[15%] -ml-[85px] w-[500px] h-[500px] transform-style-3d rotate-x-[90deg] translate-z-[40px] pointer-events-none">
-              {/* Shadow */}
-              <div className="absolute inset-0 rounded-full bg-black/40 blur-[40px] transform translate-y-[20px] translate-z-[-10px]"></div>
-
-              <div className="w-full h-full transform-style-3d animate-[spin_20s_linear_infinite]">
-                {/* Cylinder Stack for Depth */}
-                {[...Array(16)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute inset-0 rounded-full bg-[#5D4037] border border-[#4E342E]"
-                    style={{
-                      transform: `translateZ(${i * 2}px)`,
-                      background: 'linear-gradient(to bottom right, #5D4037, #4E342E)'
-                    }}
-                  ></div>
-                ))}
-
-                {/* Top Face */}
-                <div className="absolute inset-0 rounded-full bg-[#8B4513] border-[2px] border-[#723B10] overflow-hidden"
-                  style={{
-                    transform: 'translateZ(32px)',
-                    background: 'radial-gradient(circle at 30% 30%, #A0522D, #8B4513)'
-                  }}>
-                  {/* Wood Grain Rings */}
-                  <div className="absolute inset-0 rounded-full border-[20px] border-[#723B10]/20 scale-[0.9]"></div>
-                  <div className="absolute inset-0 rounded-full border-[20px] border-[#723B10]/20 scale-[0.7]"></div>
-                  <div className="absolute inset-0 rounded-full border-[20px] border-[#723B10]/20 scale-[0.5]"></div>
-                  <div className="absolute inset-0 rounded-full border-[20px] border-[#723B10]/20 scale-[0.3]"></div>
-
-                  {/* Texture Overlay */}
-                  <div className="absolute inset-0 opacity-30 mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')]"></div>
-
-                  {/* Shiny Highlight */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-50 rounded-full"></div>
-                </div>
-              </div>
-            </div>
+            {/* Gavel Block Removed */}
 
           </div>
         </div>
