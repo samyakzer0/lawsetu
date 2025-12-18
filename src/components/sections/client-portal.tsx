@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import { 
   LayoutDashboard, 
   Calendar as CalendarIcon, 
@@ -8,26 +10,227 @@ import {
   Gavel, 
   CheckCircle2, 
   AlertCircle,
-  Clock
+  Clock,
+  Search,
+  Bell,
+  ChevronDown,
+  Download,
+  Filter
 } from 'lucide-react';
 
 export default function ClientPortalSection() {
+  const [activeTab, setActiveTab] = useState("Overview");
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "Overview":
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <StatCard 
+                label="Active Cases" 
+                value="12" 
+                trend="+2 this month" 
+                trendUp={true}
+              />
+              <StatCard 
+                label="Pending Actions" 
+                value="5" 
+                trend="3 urgent" 
+                trendUp={false}
+                highlight
+              />
+              <StatCard 
+                label="Next Hearing" 
+                value="Tomorrow" 
+                subValue="10:30 AM"
+              />
+            </div>
+
+            {/* Recent Activity Section */}
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+              <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <h4 className="font-serif font-bold text-slate-900">Recent Case Activity</h4>
+                <button className="text-sm font-medium text-amber-600 hover:text-amber-700">View All</button>
+              </div>
+              <div className="divide-y divide-slate-100">
+                <ActivityItem 
+                  title="Hearing Scheduled"
+                  description="Case #452 - Property Dispute vs State"
+                  time="2 hours ago"
+                  icon={CalendarIcon}
+                  iconColor="text-amber-600"
+                  iconBg="bg-amber-50"
+                />
+                <ActivityItem 
+                  title="New Document Uploaded"
+                  description="Affidavit for Case #102"
+                  time="5 hours ago"
+                  icon={FileText}
+                  iconColor="text-blue-600"
+                  iconBg="bg-blue-50"
+                />
+                <ActivityItem 
+                  title="Message from Advocate"
+                  description="Please review the attached draft."
+                  time="Yesterday"
+                  icon={MessageSquare}
+                  iconColor="text-emerald-600"
+                  iconBg="bg-emerald-50"
+                />
+              </div>
+            </div>
+          </div>
+        );
+      case "My Cases":
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="relative flex-1 w-full md:max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input 
+                  type="text" 
+                  placeholder="Search cases..." 
+                  className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"
+                />
+              </div>
+              <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 w-full md:w-auto justify-center">
+                <Filter className="w-4 h-4" />
+                Filter
+              </button>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+              <div className="divide-y divide-slate-100">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="p-4 md:p-6 hover:bg-slate-50 transition-colors cursor-pointer group">
+                    <div className="flex flex-col md:flex-row md:items-start justify-between mb-2 gap-2">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">Active</span>
+                          <span className="text-xs text-slate-500">Case #{450 + i}</span>
+                        </div>
+                        <h4 className="font-bold text-slate-900 group-hover:text-amber-700 transition-colors">
+                          Sharma vs. State of Maharashtra
+                        </h4>
+                      </div>
+                      <span className="text-sm font-medium text-slate-900">₹ 25,000</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-slate-500">
+                      <div className="flex items-center gap-1.5">
+                        <Gavel className="w-4 h-4" />
+                        <span>High Court</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <CalendarIcon className="w-4 h-4" />
+                        <span>Next: 24 Jan</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      case "Calendar":
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center">
+              <div className="w-16 h-16 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <CalendarIcon className="w-8 h-8 text-amber-600" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-2">Upcoming Hearings</h3>
+              <p className="text-slate-500 mb-6">You have 3 hearings scheduled for this month.</p>
+              <div className="space-y-3 text-left">
+                {[
+                  { date: "18 Dec", title: "Case #452 Hearing", time: "10:30 AM" },
+                  { date: "24 Dec", title: "Case #455 Filing", time: "02:00 PM" },
+                  { date: "05 Jan", title: "Client Meeting", time: "11:00 AM" }
+                ].map((event, i) => (
+                  <div key={i} className="flex items-center gap-4 p-3 rounded-lg bg-slate-50 border border-slate-100">
+                    <div className="bg-white px-3 py-1.5 rounded border border-slate-200 text-center min-w-[60px]">
+                      <div className="text-xs font-bold text-slate-500 uppercase">{event.date.split(' ')[1]}</div>
+                      <div className="text-lg font-bold text-slate-900">{event.date.split(' ')[0]}</div>
+                    </div>
+                    <div>
+                      <div className="font-bold text-slate-900">{event.title}</div>
+                      <div className="text-xs text-slate-500">{event.time}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      case "Documents":
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-4">
+             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {['Affidavit.pdf', 'Court Order.pdf', 'Evidence_v1.jpg', 'Legal_Notice.docx'].map((doc, i) => (
+                  <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 hover:border-amber-300 hover:shadow-md transition-all cursor-pointer group">
+                    <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-50 transition-colors">
+                      <FileText className="w-5 h-5 text-slate-500 group-hover:text-amber-600" />
+                    </div>
+                    <div className="font-medium text-slate-900 truncate mb-1">{doc}</div>
+                    <div className="flex items-center justify-between text-xs text-slate-500">
+                      <span>2.4 MB</span>
+                      <Download className="w-4 h-4 hover:text-amber-600" />
+                    </div>
+                  </div>
+                ))}
+             </div>
+          </div>
+        );
+      case "Messages":
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 h-full flex flex-col bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="flex-1 p-4 space-y-4 overflow-y-auto max-h-[400px]">
+              <div className="flex justify-end">
+                <div className="bg-amber-600 text-white px-4 py-2 rounded-2xl rounded-tr-none max-w-[80%] text-sm">
+                  Hello sir, any update on the hearing date?
+                </div>
+              </div>
+              <div className="flex justify-start">
+                <div className="bg-slate-100 text-slate-800 px-4 py-2 rounded-2xl rounded-tl-none max-w-[80%] text-sm">
+                  Yes, the next hearing is scheduled for Jan 24th. I've uploaded the notice in the documents tab.
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <div className="bg-amber-600 text-white px-4 py-2 rounded-2xl rounded-tr-none max-w-[80%] text-sm">
+                  Thank you! I will check it.
+                </div>
+              </div>
+            </div>
+            <div className="p-3 border-t border-slate-100 bg-slate-50">
+              <input 
+                type="text" 
+                placeholder="Type a message..." 
+                className="w-full px-4 py-2 rounded-full border border-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 text-sm"
+              />
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <section className="py-24 bg-slate-50 overflow-hidden relative">
+    <section className="py-24 bg-slate-50 overflow-hidden relative font-sans">
       {/* Background decoration */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
-        <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-blue-100/40 rounded-full blur-[100px]" />
-        <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-amber-100/40 rounded-full blur-[100px]" />
+        <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-amber-100/40 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-orange-100/40 rounded-full blur-[100px]" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10 max-w-7xl">
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-16 animate-fade-in-up">
-          <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-bold text-xs tracking-wider mb-6">
+          <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-amber-50 border border-amber-100 text-amber-700 font-bold text-xs tracking-wider mb-6">
             CLIENT EXPERIENCE
           </div>
           <h2 className="text-4xl md:text-5xl font-serif font-bold text-slate-900 mb-6 leading-tight">
-            Your clients see a <span className="text-blue-600">premium dashboard.</span>
+            Your clients see a <span className="text-amber-600">premium dashboard.</span>
           </h2>
           <p className="text-lg md:text-xl text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto">
             Impress your clients with a branded portal where they can track their
@@ -36,135 +239,75 @@ export default function ClientPortalSection() {
         </div>
 
         {/* Portal Mockup Container */}
-        <div className="relative max-w-5xl mx-auto perspective-1000 animate-fade-in-up animate-delay-200">
-          <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all hover:translate-y-[-4px] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] flex flex-col md:min-h-[600px]">
+        <div className="relative max-w-6xl mx-auto perspective-1000 animate-fade-in-up animate-delay-200">
+          <div className="bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col md:flex-row min-h-[500px] md:min-h-[650px]">
             
-            {/* Dark Top Bar */}
-            <div className="bg-slate-900 px-4 md:px-6 py-4 flex items-center justify-between text-white shrink-0">
-              <div className="flex items-center gap-3 md:gap-4">
-                <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white text-base md:text-xl shadow-lg shadow-blue-900/50">
-                  A
+            {/* Sidebar */}
+            <div className="w-full md:w-64 bg-slate-900 text-slate-300 flex-shrink-0 flex flex-col">
+              <div className="p-4 md:p-6 border-b border-slate-800 flex items-center justify-between md:block">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center font-bold text-white text-lg">
+                    L
+                  </div>
+                  <span className="font-serif font-bold text-white text-lg tracking-wide">LawSetu</span>
                 </div>
-                <div>
-                  <div className="font-bold text-sm md:text-base leading-tight">Advocate Priya Sharma</div>
-                  <div className="text-xs text-slate-400 mt-0.5">Client Portal</div>
+                {/* Mobile User Profile Toggle */}
+                <div className="md:hidden flex items-center gap-2">
+                   <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold text-xs">RK</div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 bg-slate-800/50 px-3 py-1.5 rounded-full border border-slate-700/50">
-                <div className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              
+              <div className="flex-1 p-2 md:p-4 flex flex-row md:flex-col gap-2 overflow-x-auto md:overflow-visible no-scrollbar">
+                <div onClick={() => setActiveTab("Overview")} className="min-w-[120px] md:min-w-0">
+                  <SidebarItem icon={LayoutDashboard} label="Overview" active={activeTab === "Overview"} />
                 </div>
-                <span className="text-xs font-medium text-slate-300">Online</span>
+                <div onClick={() => setActiveTab("My Cases")} className="min-w-[120px] md:min-w-0">
+                  <SidebarItem icon={Briefcase} label="My Cases" active={activeTab === "My Cases"} count={12} />
+                </div>
+                <div onClick={() => setActiveTab("Calendar")} className="min-w-[120px] md:min-w-0">
+                  <SidebarItem icon={CalendarIcon} label="Calendar" active={activeTab === "Calendar"} />
+                </div>
+                <div onClick={() => setActiveTab("Documents")} className="min-w-[120px] md:min-w-0">
+                  <SidebarItem icon={FileText} label="Documents" active={activeTab === "Documents"} />
+                </div>
+                <div onClick={() => setActiveTab("Messages")} className="min-w-[120px] md:min-w-0">
+                  <SidebarItem icon={MessageSquare} label="Messages" active={activeTab === "Messages"} count={3} />
+                </div>
+              </div>
+
+              <div className="hidden md:block p-4 border-t border-slate-800">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-white font-bold text-xs">
+                    RK
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium text-white truncate">Rajesh Kumar</div>
+                    <div className="text-xs text-slate-500 truncate">Client Account</div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Portal Body */}
-            <div className="flex flex-1 overflow-hidden">
-              {/* Sidebar */}
-              <div className="w-20 md:w-64 bg-white border-r border-slate-100 flex-shrink-0 flex flex-col pt-6 pb-4">
-                <nav className="space-y-1 px-3">
-                  <SidebarItem 
-                    icon={LayoutDashboard} 
-                    label="My Cases" 
-                    active 
-                  />
-                  <SidebarItem 
-                    icon={CalendarIcon} 
-                    label="Calendar" 
-                  />
-                  <SidebarItem 
-                    icon={FileText} 
-                    label="Documents" 
-                  />
-                  <SidebarItem 
-                    icon={MessageSquare} 
-                    label="Messages" 
-                    count={2}
-                  />
-                </nav>
-                <div className="mt-auto px-3">
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 hidden md:block">
-                    <p className="text-xs font-semibold text-slate-900 mb-1">Need Help?</p>
-                    <p className="text-[10px] text-slate-500 mb-2">Contact support team anytime.</p>
-                    <button className="text-[10px] font-bold text-blue-600 hover:underline">Chat Support</button>
+            {/* Main Content */}
+            <div className="flex-1 bg-slate-50 flex flex-col min-w-0">
+              {/* Top Bar */}
+              <header className="bg-white border-b border-slate-200 px-4 md:px-6 py-4 flex items-center justify-between">
+                <h3 className="font-serif text-xl font-bold text-slate-900">{activeTab}</h3>
+                <div className="flex items-center gap-4">
+                  <div className="relative hidden md:block">
+                    <Search className="w-5 h-5 text-slate-400" />
                   </div>
+                  <div className="w-px h-6 bg-slate-200 hidden md:block"></div>
+                  <button className="relative text-slate-500 hover:text-slate-700">
+                    <Bell className="w-5 h-5" />
+                    <span className="absolute top-0 right-0 w-2 h-2 bg-amber-500 rounded-full border-2 border-white"></span>
+                  </button>
                 </div>
-              </div>
+              </header>
 
-              {/* Main Content Area */}
-              <div className="flex-1 bg-slate-50/50 p-4 md:p-8 overflow-y-auto w-full">
-                
-                {/* Metric Cards */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-8">
-                  <MetricCard 
-                    icon={Briefcase} 
-                    value="12" 
-                    label="Active Cases" 
-                    iconColor="text-blue-600" 
-                    iconBg="bg-blue-100" 
-                  />
-                  <MetricCard 
-                    icon={Gavel} 
-                    value="3" 
-                    label="Upcoming Hearings" 
-                    iconColor="text-amber-600" 
-                    iconBg="bg-amber-100" 
-                  />
-                  <MetricCard 
-                    icon={CheckCircle2} 
-                    value="45" 
-                    label="Completed" 
-                    iconColor="text-emerald-600" 
-                    iconBg="bg-emerald-100" 
-                  />
-                  <MetricCard 
-                    icon={AlertCircle} 
-                    value="7" 
-                    label="Pending Actions" 
-                    iconColor="text-red-600" 
-                    iconBg="bg-red-100" 
-                  />
-                </div>
-
-                {/* Recent Cases List */}
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-serif text-lg font-bold text-slate-900">Recent Cases</h3>
-                    <button className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
-                      View all
-                    </button>
-                  </div>
-                  
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                    <div className="divide-y divide-slate-100">
-                      <CaseItem 
-                        id="CL-2024-003"
-                        client="Sharma Enterprises"
-                        type="Contract Dispute"
-                        date="Feb 15, 2024"
-                        status="In Progress"
-                        statusColor="blue"
-                      />
-                      <CaseItem 
-                        id="CL-2024-002"
-                        client="Rajesh Kumar"
-                        type="Property Matter"
-                        date="Feb 20, 2024"
-                        status="Waiting Documents"
-                        statusColor="amber"
-                      />
-                      <CaseItem 
-                        id="CL-2024-001"
-                        client="ABC Pvt Ltd"
-                        type="Labor Dispute"
-                        date="Feb 18, 2024"
-                        status="In Progress"
-                        statusColor="blue"
-                      />
-                    </div>
-                  </div>
-                </div>
+              {/* Dashboard Content */}
+              <div className="flex-1 p-4 md:p-8 overflow-y-auto bg-slate-50">
+                {renderContent()}
               </div>
             </div>
           </div>
@@ -176,15 +319,15 @@ export default function ClientPortalSection() {
 
 function SidebarItem({ icon: Icon, label, active = false, count }: { icon: any, label: string, active?: boolean, count?: number }) {
   return (
-    <button className={`w-full flex items-center md:gap-3 p-3 rounded-lg transition-all duration-200 group ${
+    <button className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group whitespace-nowrap ${
       active 
-        ? 'bg-blue-50 text-blue-700 font-semibold' 
-        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium'
+        ? 'bg-amber-500/10 text-amber-500 font-medium' 
+        : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
     }`}>
-      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? 'text-blue-600' : 'text-slate-500 group-hover:text-slate-700'}`} />
-      <span className="hidden md:block text-sm">{label}</span>
+      <Icon className={`w-5 h-5 flex-shrink-0 ${active ? 'text-amber-500' : 'text-slate-500 group-hover:text-slate-300'}`} />
+      <span className="text-sm">{label}</span>
       {count && (
-        <span className="hidden md:flex ml-auto w-5 h-5 items-center justify-center bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full">
+        <span className="ml-auto flex h-5 min-w-[20px] items-center justify-center rounded-full bg-amber-500 px-1.5 text-[10px] font-bold text-white">
           {count}
         </span>
       )}
@@ -192,59 +335,35 @@ function SidebarItem({ icon: Icon, label, active = false, count }: { icon: any, 
   );
 }
 
-function MetricCard({ icon: Icon, value, label, iconColor, iconBg }: { icon: any, value: string, label: string, iconColor: string, iconBg: string }) {
+function StatCard({ label, value, subValue, trend, trendUp, highlight }: { label: string, value: string, subValue?: string, trend?: string, trendUp?: boolean, highlight?: boolean }) {
   return (
-    <div className="bg-white p-4 md:p-5 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
-      <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg ${iconBg} ${iconColor} flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform duration-300`}>
-        <Icon className="w-5 h-5 md:w-6 md:h-6" />
+    <div className={`p-6 rounded-xl border transition-all ${highlight ? 'bg-amber-50 border-amber-100' : 'bg-white border-slate-200'}`}>
+      <p className={`text-sm font-medium mb-2 ${highlight ? 'text-amber-800' : 'text-slate-500'}`}>{label}</p>
+      <div className="flex items-baseline gap-2">
+        <h4 className={`text-3xl font-serif font-bold ${highlight ? 'text-amber-900' : 'text-slate-900'}`}>{value}</h4>
+        {subValue && <span className="text-sm text-slate-500 font-medium">{subValue}</span>}
       </div>
-      <div>
-        <p className="text-2xl md:text-3xl font-bold text-slate-900 mb-0.5 md:mb-1">{value}</p>
-        <p className="text-xs md:text-sm font-medium text-slate-500">{label}</p>
-      </div>
+      {trend && (
+        <div className={`mt-2 text-xs font-medium flex items-center gap-1 ${trendUp ? 'text-emerald-600' : 'text-amber-600'}`}>
+          {trend}
+        </div>
+      )}
     </div>
   );
 }
 
-function CaseItem({ id, client, type, date, status, statusColor }: { 
-  id: string, 
-  client: string, 
-  type: string, 
-  date: string, 
-  status: string, 
-  statusColor: 'blue' | 'amber' 
-}) {
-  const statusStyles = {
-    blue: 'bg-blue-50 text-blue-700 border-blue-100',
-    amber: 'bg-slate-100 text-slate-600 border-slate-200' // Matching the greyish "Waiting Documents" look from screenshot mostly
-  };
-
-  const statusStyle = statusColor === 'blue' 
-    ? 'bg-blue-50 text-blue-700 border border-blue-100'
-    : 'bg-slate-100 text-slate-600 border border-slate-200';
-
+function ActivityItem({ title, description, time, icon: Icon, iconColor, iconBg }: { title: string, description: string, time: string, icon: any, iconColor: string, iconBg: string }) {
   return (
-    <div className="p-4 flex items-center justify-between hover:bg-slate-50 transition-colors group cursor-pointer">
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-3">
-          <span className="font-bold text-slate-900 text-sm md:text-base">{id}</span>
-          <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-slate-300"></span>
-          <span className="hidden sm:inline text-sm font-medium text-slate-600">{client}</span>
-        </div>
-        <div className="flex items-center gap-2 sm:hidden">
-          <span className="text-xs font-medium text-slate-600">{client}</span>
-        </div>
-        <div className="text-xs text-slate-500 sm:mt-0.5">{type}</div>
+    <div className="px-6 py-4 flex items-start gap-4 hover:bg-slate-50 transition-colors cursor-pointer group">
+      <div className={`w-10 h-10 rounded-full ${iconBg} ${iconColor} flex items-center justify-center flex-shrink-0 mt-0.5`}>
+        <Icon className="w-5 h-5" />
       </div>
-      
-      <div className="flex flex-col items-end gap-2">
-        <span className={`px-2.5 py-1 rounded-full text-[10px] md:text-xs font-bold whitespace-nowrap ${statusStyle}`}>
-          {status}
-        </span>
-        <div className="flex items-center gap-1.5 text-slate-400 group-hover:text-slate-500 transition-colors">
-          <Clock className="w-3 h-3" />
-          <span className="text-[10px] md:text-xs font-medium">{date}</span>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center justify-between mb-0.5">
+          <h5 className="text-sm font-bold text-slate-900 group-hover:text-amber-600 transition-colors">{title}</h5>
+          <span className="text-xs text-slate-400 whitespace-nowrap">{time}</span>
         </div>
+        <p className="text-sm text-slate-500 truncate">{description}</p>
       </div>
     </div>
   );

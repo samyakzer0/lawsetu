@@ -1,58 +1,90 @@
+import React from 'react';
+import { 
+  FileText, 
+  ShieldCheck, 
+  Calendar, 
+  Users, 
+  Search, 
+  Video, 
+  ArrowRight,
+  Zap,
+  Scale,
+  Gavel,
+  FileSearch,
+  FilePenLine
+} from 'lucide-react';
+
 export default function FeaturesGrid() {
   const features = [
     {
       title: "Smart Drafting",
       description: "Generate legal documents in seconds using AI. From notices to contracts, all templates comply with Indian law.",
-      icon: <FilePenLineIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />,
-      color: "bg-blue-500",
+      icon: <FilePenLine className="w-6 h-6 text-white" />,
+      gradient: "from-blue-500 to-blue-600",
+      shadow: "shadow-blue-500/30"
     },
     {
       title: "AI Legal Review",
       description: "Upload any document and get instant analysis. Identifies risks, loopholes, and suggests improvements.",
-      icon: <FileSearchIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />,
-      color: "bg-purple-500",
+      icon: <FileSearch className="w-6 h-6 text-white" />,
+      gradient: "from-purple-500 to-purple-600",
+      shadow: "shadow-purple-500/30"
     },
     {
       title: "Smart Calendar",
       description: "Never miss a hearing again. Auto-sync with eCourts and get WhatsApp reminders 24 hours before.",
-      icon: <CalendarIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />,
-      color: "bg-orange-500",
+      icon: <Calendar className="w-6 h-6 text-white" />,
+      gradient: "from-orange-500 to-orange-600",
+      shadow: "shadow-orange-500/30"
     },
     {
       title: "Team Management",
       description: "Collaborate with juniors and clerks. Assign tasks, share case files, and track progress in real-time.",
-      icon: <UsersIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />,
-      color: "bg-emerald-500",
+      icon: <Users className="w-6 h-6 text-white" />,
+      gradient: "from-emerald-500 to-emerald-600",
+      shadow: "shadow-emerald-500/30"
     },
     {
       title: "AI Legal Research",
       description: "Ask questions in plain English. Get relevant case laws, precedents, and legal principles instantly.",
-      icon: <SearchIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />,
-      color: "bg-rose-500",
+      icon: <Search className="w-6 h-6 text-white" />,
+      gradient: "from-rose-500 to-rose-600",
+      shadow: "shadow-rose-500/30"
     },
     {
       title: "Video Consultations",
       description: "Meet clients virtually with built-in video calling. Record sessions and auto-generate meeting notes.",
-      icon: <VideoIcon className="w-6 h-6 md:w-8 md:h-8 text-white" />,
-      color: "bg-blue-600",
+      icon: <Video className="w-6 h-6 text-white" />,
+      gradient: "from-cyan-500 to-cyan-600",
+      shadow: "shadow-cyan-500/30"
     },
   ];
 
   return (
-    <section className="py-20 md:py-32 bg-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-24 md:py-32 bg-slate-50 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-purple-100/50 rounded-full blur-[100px]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-blue-50 border border-blue-100">
-            <span className="text-xs font-bold tracking-widest text-blue-600 uppercase">
+          <div className="inline-flex items-center justify-center px-4 py-1.5 mb-6 rounded-full bg-white border border-slate-200 shadow-sm">
+            <Zap className="w-4 h-4 text-amber-500 mr-2" />
+            <span className="text-xs font-bold tracking-widest text-slate-700 uppercase">
               Powerful Features
             </span>
           </div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-slate-900 mb-6 leading-tight">
             Everything you need to run a{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
-              modern law practice.
+            <span className="relative inline-block">
+              <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                modern law practice.
+              </span>
+              <span className="absolute bottom-2 left-0 w-full h-3 bg-blue-100/50 -z-0 -rotate-1"></span>
             </span>
           </h2>
 
@@ -62,40 +94,57 @@ export default function FeaturesGrid() {
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Features Grid with Ripple Blur Effect */}
+        <div className="group/grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-1000">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group p-8 bg-white border border-slate-200 rounded-2xl hover:border-blue-200 hover:shadow-xl hover:shadow-blue-900/5 transition-all duration-300 flex flex-col items-start"
+              className="
+                relative p-8 bg-white rounded-2xl border border-slate-200 
+                transition-all duration-500 ease-out
+                hover:z-10 hover:scale-105 hover:shadow-2xl hover:border-transparent
+                group-hover/grid:blur-[2px] group-hover/grid:scale-[0.98] group-hover/grid:opacity-50
+                hover:!blur-none hover:!scale-105 hover:!opacity-100
+                flex flex-col items-start overflow-hidden
+              "
             >
+              {/* Hover Gradient Background */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 hover:opacity-5 transition-opacity duration-500`} />
+              
               <div
-                className={`w-14 h-14 rounded-xl ${feature.color} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                className={`
+                  w-14 h-14 rounded-xl bg-gradient-to-br ${feature.gradient} 
+                  flex items-center justify-center mb-6 
+                  shadow-lg ${feature.shadow}
+                  group-hover:scale-110 transition-transform duration-500
+                `}
               >
                 {feature.icon}
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">
+              
+              <h3 className="text-xl font-bold text-slate-900 mb-3 relative z-10">
                 {feature.title}
               </h3>
-              <p className="text-slate-600 leading-relaxed text-sm md:text-base">
+              
+              <p className="text-slate-600 leading-relaxed text-sm md:text-base relative z-10">
                 {feature.description}
               </p>
+
+              {/* Decorative Corner */}
+              <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${feature.gradient} opacity-[0.03] rounded-bl-[100px] transition-all duration-500 group-hover:scale-150`} />
             </div>
           ))}
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-16 text-center space-y-3">
+        <div className="mt-20 text-center space-y-4">
           <p className="text-slate-500 font-medium">
             And 40+ more features to explore...
           </p>
-          <a
-            href="#"
-            className="inline-flex items-center gap-2 text-blue-600 font-bold hover:text-blue-700 transition-colors group"
-          >
-            See WhatsApp Integration
-            <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </a>
+          <button className="inline-flex items-center gap-2 px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:bg-slate-800 transition-all hover:scale-105 shadow-xl shadow-slate-900/20 group">
+            Explore All Features
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
         </div>
       </div>
     </section>
